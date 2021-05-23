@@ -1,0 +1,77 @@
+
+-- Updates patient 1s first name and tel no.
+UPDATE PATIENT
+SET PATIENTFNAME='Andrew', PATIENTTEL='0214377699'
+WHERE PATIENTNO=1;
+
+-- Updates the price of treatment 2 (fillings) to 95.
+UPDATE TREATMENT
+SET TREATMENTCOST=95
+WHERE TREATMENTNO=2;
+
+-- Updates the telephone number of specialist 1.
+UPDATE SPECIALIST
+SET SPECTEL='0214985662'
+WHERE SPECNO=1;
+
+-- Added to demonstrate grouped payments later.
+INSERT INTO PAYMENT
+VALUES (7, 25.00, 'Cash', 3);
+
+-- Inserts a new treatment for crown fitting.
+INSERT INTO TREATMENT
+VALUES (5, 'Crown fitting', 'This is the fitting of a new crown to the patient', 800.00);
+
+-- Adds a record for a new patient.
+INSERT INTO PATIENT
+VALUES (7, 'Deborah', 'Cocker', '76 Bakers Boulevard, Brennan', 'R42SD87', 'Cork', '0214568557', 'debsrolls@eircom.net');
+
+-- Inserts a new payment record.
+INSERT INTO PAYMENT
+VALUES (7, 75.00, 'Cheque', 7);
+
+-- Deletes pateint no 7.
+DELETE FROM PATIENT
+WHERE PATIENTNO=7;
+
+-- Deletes payment 7.
+DELETE FROM PAYMENT
+WHERE RECEIPTNO=7;
+
+-- Deletes the treatment 'crown fitting'.
+DELETE FROM TREATMENT
+WHERE TREATMENTNO=5;
+
+-- Displays all appointments for patient 4.
+SELECT PATIENTFNAME, PATIENTSNAME, APPOINTMENTDATE, APPOINTMENTTIME
+FROM PATIENT, APPOINTMENT
+WHERE APPOINTMENT.PATIENTNO=4 AND PATIENT.PATIENTNO=APPOINTMENT.PATIENTNO;
+
+-- Displays patient info who have cancelled late.
+SELECT PATIENTFNAME, PATIENTSNAME, PATIENTADDRESS, PATIENTEIRCODE, PATIENTCOUNTY
+FROM PATIENT, APPOINTMENT
+WHERE APPOINTMENT.LATECANCEL=1 AND PATIENT.PATIENTNO=APPOINTMENT.PATIENTNO;
+
+- Displays the names of people who have paid by cheque.
+SELECT PATIENTFNAME, PATIENTSNAME
+FROM PATIENT, BILL, PAYMENT
+WHERE PAYMENT.PAYMENTTYPE='Cheque' AND
+	PAYMENT.BILLNO=BILL.BILLNO AND
+    	BILL.PATIENTNO=PATIENT.PATIENTNO;
+
+-- Displays the treatments done to patient 4.
+SELECT TREATMENTNAME, TREATMENTDESC
+FROM TREATMENT, APPOINTMENT
+WHERE APPOINTMENT.PATIENTNO=4 AND
+    TREATMENT.TREATMENTNO=APPOINTMENT.TREATMENTNO;
+
+-- Displays total payments made to each different bill.
+SELECT BILLNO, SUM(RECEIPTAMOUNT)
+FROM PAYMENT
+GROUP BY BILLNO;
+
+
+
+
+
+
